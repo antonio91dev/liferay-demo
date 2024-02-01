@@ -1,0 +1,10 @@
+Bundle-Name: sede-administration
+Bundle-SymbolicName: com.vass.reniec
+Bundle-Version: 1.0.0
+Export-Package: com.vass.reniec.constants
+Include-Resource:\
+    @commons-csv-1.4.jar,\
+
+Import-Package: \
+    !org.apache.commons.csv*,\
+    *
