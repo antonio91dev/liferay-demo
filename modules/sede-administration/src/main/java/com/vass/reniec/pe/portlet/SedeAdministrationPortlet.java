@@ -1,27 +1,30 @@
 package com.vass.reniec.pe.portlet;
 
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.vass.reniec.pe.constants.SedeAdministrationPortletKeys;
 
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.vass.reniec.pe.constants.SedeAdministrationPortletKeys;
+import com.vass.reniec.pe.service.Invoker;
+import com.vass.reniec.pe.util.CSVImportFileUtil;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 
-import com.vass.reniec.pe.util.CSVImportFileUtil;
 import org.osgi.service.component.annotations.Component;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author jantonio
@@ -42,47 +45,60 @@ import java.io.InputStream;
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + SedeAdministrationPortletKeys.SEDEADMINISTRATION,
 		"javax.portlet.resource-bundle=content.Language",
-		"javax.portlet.security-role-ref=power-user,user",
-
+		"javax.portlet.security-role-ref=power-user,user"
 	},
 	service = Portlet.class
 )
 public class SedeAdministrationPortlet extends MVCPortlet {
-	private Log log = LogFactoryUtil.getLog(SedeAdministrationPortlet.class);
 
-	public void CSVDataUpload(ActionRequest actionRequest, ActionResponse actionResponse)
-			throws IOException, PortletException {
+	public void CSVDataUpload(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws IOException, PortletException, Exception{
 
-		log.info("******************** User CSV Data Upload ***************************");
+		log.info(
+			"******************** User CSV Data Upload ***************************");
+		try {
 
-		String filePath = "D:\\CSV\\Import\\User.csv";
 
-		try (FileOutputStream fOut = new FileOutputStream(filePath);) {
-			UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
-			InputStream is = uploadRequest.getFileAsStream("csvDataFile");
-			int i;
-			while ((i = is.read()) != -1) {
-				fOut.write(i);
-			}
+			UploadPortletRequest uploadRequest =
+					PortalUtil.getUploadPortletRequest(actionRequest);
 
-			File csvFile = new File(filePath);
-			log.info("CSV File ===> " + csvFile);
+			File csvFile = uploadRequest.getFile("csvDataFile");
 
 			if (Validator.isNotNull(csvFile)) {
-				if (csvFile.getName().contains(".csv")) {
-					JSONArray csvDataArray = CSVImportFileUtil.readCSVFile(csvFile);
-					log.info(csvDataArray);
+				if (csvFile.getName(
+				).contains(
+						".csv"
+				)) {
 
-					//UserCSVImportUtil.addUserToDatabase(csvDataArray, actionRequest);
+					JSONArray csvDataArray = CSVImportFileUtil.readCSVFile(
+							csvFile);
 
-				} else {
-					log.error("Uploaded File is not CSV file.Your file name is ----> " + csvFile.getName());
+					if (Validator.isNotNull(csvDataArray)) {
+						JSONObject JSONObject = serviceInvoker.addUbigeo(csvDataArray, actionRequest);
+					}
+				}
+				else {
+					log.error(
+							"Uploaded File is not CSV file.Your file name is ----> " +
+									csvFile.getName());
+					throw new Exception("Uploaded File is not CSV file.Your file name is");
 				}
 			}
-		} catch (Exception e) {
-			log.error("Exception in CSV File Reading Process :: ", e);
+
+
+		}
+		catch (Exception exception) {
+			log.error(exception,exception);
+
+			SessionErrors.add(actionRequest, exception.getClass());
+
 		}
 	}
 
+	private Log log = LogFactoryUtil.getLog(SedeAdministrationPortlet.class);
+
+	@Reference
+	private Invoker serviceInvoker;
 
 }
