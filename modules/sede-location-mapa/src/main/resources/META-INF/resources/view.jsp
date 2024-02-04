@@ -5,53 +5,48 @@
 
 
 <portlet:resourceURL id="getDepartamento" var="getDepartamentoURL" />
-<portlet:resourceURL id="getProvinciaByDepartamento" var="getProvinciaByDepartamentoURL" />
-<portlet:resourceURL id="getDistritoByProvincia" var="getDistritoByProvinciaURL" />
-
-
-
 
 <div class="view_store_search">
-<aui:form name="searchStoreLocationForm">
-    <aui:fieldset>
+    <aui:form name="searchStoreLocationForm">
+        <aui:fieldset>
             <aui:input autoFocus="<%= true %>" label="name" name="name" placeholder="name" />
-        <aui:input autoFocus="<%= true %>" label="name2" name="name2" placeholder="name2" />
+            <aui:input autoFocus="<%= true %>" label="name2" name="name2" placeholder="name2" />
 
-        <aui:input autoFocus="<%= true %>" label="name3" name="name3" placeholder="name3" />
+            <aui:input autoFocus="<%= true %>" label="name3" name="name3" placeholder="name3" />
 
-        <aui:input autoFocus="<%= true %>" label="name4" name="name4" placeholder="name4" />
+            <aui:input autoFocus="<%= true %>" label="name4" name="name4" placeholder="name4" />
 
-    </aui:fieldset>
+        </aui:fieldset>
 
-    <aui:button-row>
-        <aui:button type="submit" />
-
-
-    </aui:button-row>
+        <aui:button-row>
+            <aui:button type="submit" />
 
 
-    <aui:select label="Select Distance Unit" name="distanceUnit">
-        <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-        <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-    </aui:select>
+        </aui:button-row>
 
-    <aui:select label="Select Distance Unit" name="distanceUnit1">
-        <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-        <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-    </aui:select>
 
-    <aui:select label="Select Distance Unit" name="distanceUnit2">
-        <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-        <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-    </aui:select>
+        <aui:select label="Select Distance Unit" name="distanceUnit">
+            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
+            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
+        </aui:select>
 
-    <aui:input helpMessage="storeSearchToolTip" id="distance" label="Distance" name="distance">
-        <aui:validator name="digits"></aui:validator>
-    </aui:input>
+        <aui:select label="Select Distance Unit" name="distanceUnit1">
+            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
+            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
+        </aui:select>
 
-    <button class="btn btn-primary custBtn" onclick="<portlet:namespace />getNearbyStoreLocation();" type="button"><liferay-ui:message key="submit" /></button>
+        <aui:select label="Select Distance Unit" name="distanceUnit2">
+            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
+            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
+        </aui:select>
 
-</aui:form>
+        <aui:input helpMessage="storeSearchToolTip" id="distance" label="Distance" name="distance">
+            <aui:validator name="digits"></aui:validator>
+        </aui:input>
+
+        <button class="btn btn-primary custBtn" onclick="<portlet:namespace />getNearbyStoreLocation();" type="button"><liferay-ui:message key="submit" /></button>
+
+    </aui:form>
     <div class="clearfix"></div>
     <div class="container">
         <div id="noRecords" style="display: none;"><liferay-ui:message key="no-records-found" /></div>
@@ -69,26 +64,28 @@
 
 <script type="text/javascript">
 
-	$( document ).ready(function() {
-		$("#map").show();
-		var locations = [];
-		locations.push({
-			lat:Number(-12.068352795386877),
-			lng:Number(-77.04771625774335),
-			storeName:"value.storeName",
-			address1:"value.address1",
-			city:"value.city",
-			state:"value.state",
-			country:"value.country",
-			zip:"value.zip",
-			phone:"value.phone"
-		});
+    $( document ).ready(function() {
+        <portlet:namespace />getCargaDepartamento();
+
+        $("#map").show();
+        var locations = [];
+        locations.push({
+            lat:Number(-12.068352795386877),
+            lng:Number(-77.04771625774335),
+            storeName:"value.storeName",
+            address1:"value.address1",
+            city:"value.city",
+            state:"value.state",
+            country:"value.country",
+            zip:"value.zip",
+            phone:"value.phone"
+        });
         initMap(locations);
 
 
 
 
-	});
+    });
 
     function initMap(locations) {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -126,18 +123,19 @@
 
 
 
-	function <portlet:namespace />getCargaDepartamento() {
+    function <portlet:namespace />getCargaDepartamento() {
+        //alert("PRIMER AJAX");
         $.ajax({
             url :"<%= getDepartamentoURL %>",
             data:{
-                <portlet:namespace />cmd: "departamento",
+                <portlet:namespace />cmd: "departamento"
             },
             success: function(data) {
                 var content= JSON.parse(data);
-
+                alert("PRIMER AJAX-52");
             }
         });
-	}
+    }
 
     function <portlet:namespace />getCargaProvincia(departamento) {
         $.ajax({
@@ -171,12 +169,6 @@
 
 
 
-	function <portlet:namespace />getCargaBUscar() {
 
-	}
-
-	function <portlet:namespace />getDepartamento() {
-
-	}
 
 </script>

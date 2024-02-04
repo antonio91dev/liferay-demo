@@ -1,4 +1,6 @@
-Bundle-Name: googlesede-mapa
-Bundle-SymbolicName: googlesede.mapa
+Bundle-Name: sede-location-mapa
+Bundle-SymbolicName: sede.location.mapa
 Bundle-Version: 1.0.0
-Export-Package: googlesede.mapa.constants
+Export-Package: sede.location.mapa.constants
+Import-Package: \
+	*
