@@ -10,7 +10,7 @@ taglib uri="http://liferay.com/tld/site-navigation" prefix="liferay-site-navigat
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.vass.reniec.pe.portlet.context.AssetTagsDisplayContext" %>
+<%@ page import="com.vass.reniec.pe.sede.administration.portlet.context.AssetTagsDisplayContext" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

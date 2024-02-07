@@ -162,8 +162,11 @@
     </div>
 </section>
 
+
+<%= googleAPIKey %>
+
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= googleAPIKey %>&callback=initMap"></script>
 
 <script type="text/javascript">
 
@@ -323,24 +326,33 @@
     }
 
     function initMap(latitude, longitude,locations) {
+
         $('#resultadoInformacion').empty();
-        $.each( locations, function( key, value ) {
-            console.log(value);
 
 
-            $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+        $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
                 " <div class='card-item__header'>" +
-                "<img src='./../img/iconos/azules/computador.svg' alt='' loading='lazy'><h4 class='card-item__h-principal color-titulo-primario-azul'>"+value.centroDeAtencion+"</h4>" +
+                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
                 "</div>" +
-                "<p class='card-item__parrafo color-parrafo-gris-3'>" + value.nombreDeVia +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].nombreDeVia +
                 "</p>" +
-                "</div>");
+                "</div>"+
+                "<div class='card-item bg-color-blanco'>" +
+                " <div class='card-item__header'>" +
+                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                "</div>" +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].centroDeAtencion +
+                "</p>" +
+                "</div>"+
+                "");
 
-        });
+
 
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 13,
+            zoom: 14,
             center: {lat: Number(latitude), lng: Number(longitude)}
         });
 
@@ -362,6 +374,26 @@
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
                     infowindow.setContent('<div><strong>'+location.centroDeAtencion+'</div></strong><div>'+location.nombreDeVia+','+'</div>' );
+                    $('#resultadoInformacion').empty();
+                        $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+                            " <div class='card-item__header'>" +
+                            "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                            "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
+                            "</div>" +
+                            "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.nombreDeVia +
+                            "</p>" +
+                            "</div>"+
+                            "<div class='card-item bg-color-blanco'>" +
+                            " <div class='card-item__header'>" +
+                            "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                            "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                            "</div>" +
+                            "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.centroDeAtencion +
+                            "</p>" +
+                            "</div>"+
+                            "");
+
+
                     infowindow.open(map, marker);
                 }
             })(marker, i));
@@ -415,7 +447,7 @@
                 <portlet:namespace />codigotramite: codigotramite
             },
             success: function(data) {
-                //console.log(data.searchResults);
+                console.log(data.searchResults);
 
                 if(data.searchResults.length>0) {
                     var locations = [];
@@ -425,8 +457,9 @@
                             lat:Number(value.latitud),
                             lng:Number(value.longitud),
                             centroDeAtencion:value.centroDeAtencion,
-                            nombreDeVia: value.nombreDeVia
-
+                            nombreDeVia: value.nombreDeVia,
+                            tipoDeVia: value.tipoDeVia,
+                            horarioDeAtencion: value.horarioDeAtencion
                         });
                     });
 

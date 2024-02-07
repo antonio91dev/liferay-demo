@@ -1,7 +1,7 @@
 Bundle-Name: sede-administration
-Bundle-SymbolicName: com.vass.reniec
+Bundle-SymbolicName: com.vass.reniec.pe.sede.administration
 Bundle-Version: 1.0.0
-Export-Package: com.vass.reniec.constants
+Export-Package: com.vass.reniec.pe.sede.administration.constants
 Import-Package:\
 	!org.apache.commons.csv*,\
 	*

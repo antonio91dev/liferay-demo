@@ -1,6 +1,6 @@
 Bundle-Name: sede-location-mapa
-Bundle-SymbolicName: sede.location.mapa
+Bundle-SymbolicName: com.vass.reniec.pe.sede.location
 Bundle-Version: 1.0.0
-Export-Package: sede.location.mapa.constants
+Export-Package: com.vass.reniec.pe.sede.location.constants
 Import-Package: \
 	*

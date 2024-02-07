@@ -15,6 +15,7 @@ public enum Filters {
     , DESC("desc")
     , DATE_CREATED("dateCreated")
     , MODIFIED_DATE("dateModified")
+    , ID_UBIGEO_OFICINA("r_ubigeo_c_ubigeoId")
     ;
 
     private String filter;

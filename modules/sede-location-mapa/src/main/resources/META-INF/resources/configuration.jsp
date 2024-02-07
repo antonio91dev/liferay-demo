@@ -44,6 +44,11 @@
     />
 
     <aui:fieldset>
+
+        <aui:input class="form-control" label="" name="googleAPIKey" required="true" type="text" value="<%= googleAPIKey %>">
+            <aui:validator name="maxLength">256</aui:validator>
+        </aui:input>
+
         <aui:select
                 label="Tipo de Formulario"
                 name="tipoForm"
@@ -60,8 +65,8 @@
                 name="sedePrincipal"
                 value="<%= sedePrincipal %>"
         >
-            <aui:option value="37335">SEDE PRINCIPAL</aui:option>
-            <aui:option value="37335">SIN SEDE</aui:option>
+            <aui:option value="140101">SEDE PRINCIPAL</aui:option>
+            <aui:option value="">SIN SEDE</aui:option>
         </aui:select>
     </aui:fieldset>
 
