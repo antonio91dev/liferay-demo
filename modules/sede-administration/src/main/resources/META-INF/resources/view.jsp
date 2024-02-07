@@ -22,6 +22,12 @@ portletDisplay.setURLBack(redirect);
 
   <liferay-frontend:edit-form-body>
     <liferay-frontend:fieldset>
+
+      <aui:select required="<%= true %>" label="Seleccionar Objeto a importar" name="objetoImportar">
+        <aui:option value="ubigeo"><liferay-ui:message key="Ubigeo" /></aui:option>
+        <aui:option value="oficina"><liferay-ui:message key="Oficina" /></aui:option>
+      </aui:select>
+
       <aui:input
         id="csvDataFile"
         label="select-file"

@@ -12,7 +12,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.vass.reniec.pe.constants.SedeAdministrationPortletKeys;
-import com.vass.reniec.pe.service.Invoker;
+import com.vass.reniec.pe.service.ConsumerService;
 import com.vass.reniec.pe.util.CSVImportFileUtil;
 
 import java.io.File;
@@ -58,7 +58,9 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 		log.info(
 			"******************** User CSV Data Upload ***************************");
 		try {
+			String objetoImportar = ParamUtil.getString(actionRequest, "objetoImportar");
 
+			log.info("El objeto seleccionado a importar es :" + objetoImportar);
 
 			UploadPortletRequest uploadRequest =
 					PortalUtil.getUploadPortletRequest(actionRequest);
@@ -72,11 +74,19 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 				)) {
 
 					JSONArray csvDataArray = CSVImportFileUtil.readCSVFile(
-							csvFile);
+							csvFile,objetoImportar);
 
-					if (Validator.isNotNull(csvDataArray)) {
-						JSONObject JSONObject = serviceInvoker.addUbigeo(csvDataArray, actionRequest);
+					if(objetoImportar.equalsIgnoreCase("UBIGEO")){
+						log.info("Se procedera a importar el objeto : " + objetoImportar);
+						JSONObject JSONObject = consumerService.addUbigeo(csvDataArray, actionRequest);
+					}else if(objetoImportar.equalsIgnoreCase("OFICINA")){
+						log.info("Se procedera a importar el objeto : " + objetoImportar);
+						JSONObject JSONObject = consumerService.addOficina(csvDataArray, actionRequest);
 					}
+
+					/*if (Validator.isNotNull(csvDataArray)) {
+						JSONObject JSONObject = serviceInvoker.addUbigeo(csvDataArray, actionRequest);
+					}*/
 				}
 				else {
 					log.error(
@@ -99,6 +109,6 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 	private Log log = LogFactoryUtil.getLog(SedeAdministrationPortlet.class);
 
 	@Reference
-	private Invoker serviceInvoker;
+	private ConsumerService consumerService;
 
 }

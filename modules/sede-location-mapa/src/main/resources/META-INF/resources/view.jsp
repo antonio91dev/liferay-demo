@@ -1,96 +1,347 @@
+<%@ page import="com.liferay.portal.kernel.util.Constants" %>
 <%@ include file="/init.jsp" %>
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<portlet:resourceURL id="getDepartamento" var="getDepartamentoURL" />
+<portlet:resourceURL id="getSedes" var="getSedesURL" />
 <link href="<%= request.getContextPath() %>/css/custom.css" rel="stylesheet" />
 <script src="<%= request.getContextPath() %>/js/jquery.custom-scrollbar.js"></script>
 <link href="<%= request.getContextPath() %>/css/jquery.custom-scrollbar.css" rel="stylesheet">
 
-
-<portlet:resourceURL id="getDepartamento" var="getDepartamentoURL" />
-
-<div class="view_store_search">
-    <aui:form name="searchStoreLocationForm">
-        <aui:fieldset>
-            <aui:input autoFocus="<%= true %>" label="name" name="name" placeholder="name" />
-            <aui:input autoFocus="<%= true %>" label="name2" name="name2" placeholder="name2" />
-
-            <aui:input autoFocus="<%= true %>" label="name3" name="name3" placeholder="name3" />
-
-            <aui:input autoFocus="<%= true %>" label="name4" name="name4" placeholder="name4" />
-
-        </aui:fieldset>
-
-        <aui:button-row>
-            <aui:button type="submit" />
+<section class="container bg-color-blanco">
+    <div class="r-c-<%= tipoForm %>">
 
 
-        </aui:button-row>
+            <%
+                // Set balance and formatted balance as session attributes.
+                if(tipoForm.equals("mapaoficina"))
+                {
+            %>
+
+                <div class="r-c-<%= tipoForm %>-search">
+                    <div class="r-c-mapaoficina-search__input">
+                        <input
+                                type="text"
+                                id="distrito-input"
+                                name="distrito"
+                                class="r-j-input-distrito"
+                                placeholder="Ingresa el Distrito en el que te encuentras"
+                                aria-label="Distrito"
+                        />
+                        <img
+                                src="<%= request.getContextPath() %>/img/computador.svg"
+                                alt="Ícono de computadora"
+                                loading="lazy"
+                        />
+                        <ul class="autocomplete-list"></ul>
+
+                    </div>
+
+                    <button onclick="getSede();" class="r-c-mapaoficina-search__button btn r-o-button r-o-button__primary">
+                        Buscar
+                    </button>
+                </div>
+            <div class="r-c-<%= tipoForm %>-filter">
+                    <div class="dropdown r-o-dropdown">
+                        <button
+                                class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="departamento"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                        >
+                            <div class="text-container bg-color-blanco">
+                                <p class="selected-option">Departamento</p>
+                            </div>
+
+                            <div class="dropdown-icon bg-color-blanco">
+                                <img
+                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
+                                        alt="Ícono de computadora"
+                                        loading="lazy"
+                                />
+                            </div>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="departamento" id="selectorDepartamento">
+                        </div>
+                    </div>
 
 
-        <aui:select label="Select Distance Unit" name="distanceUnit">
-            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-        </aui:select>
+                    <div class="dropdown r-o-dropdown">
+                        <button
+                                class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="departamento2"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                        >
+                            <div class="text-container bg-color-blanco">
+                                <p class="selected-option">Provincia</p>
+                            </div>
 
-        <aui:select label="Select Distance Unit" name="distanceUnit1">
-            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-        </aui:select>
+                            <div class="dropdown-icon bg-color-blanco">
+                                <img
+                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
+                                        alt="Ícono de computadora"
+                                        loading="lazy"
+                                />
+                            </div>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="departamento2" id="selectorProvincia">
+                        </div>
+                    </div>
 
-        <aui:select label="Select Distance Unit" name="distanceUnit2">
-            <aui:option value="kilometer"><liferay-ui:message key="kilometer" /></aui:option>
-            <aui:option value="miles"><liferay-ui:message key="miles" /></aui:option>
-        </aui:select>
 
-        <aui:input helpMessage="storeSearchToolTip" id="distance" label="Distance" name="distance">
-            <aui:validator name="digits"></aui:validator>
-        </aui:input>
+                    <div class="dropdown r-o-dropdown">
+                        <button
+                                class="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="departamento3"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                        >
+                            <div class="text-container bg-color-blanco">
+                                <p class="selected-option">Distrito</p>
+                            </div>
 
-        <button class="btn btn-primary custBtn" onclick="<portlet:namespace />getNearbyStoreLocation();" type="button"><liferay-ui:message key="submit" /></button>
+                            <div class="dropdown-icon bg-color-blanco">
+                                <img
+                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
+                                        alt="Ícono de computadora"
+                                        loading="lazy"
+                                />
+                            </div>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="departamento3" id="selectorDistrito">
+                        </div>
+                    </div>
 
-    </aui:form>
-    <div class="clearfix"></div>
-    <div class="container">
-        <div id="noRecords" style="display: none;"><liferay-ui:message key="no-records-found" /></div>
-        <div class="row"><label id="noOfRecords"> </label> </div>
+                    <div class="dropdown r-o-dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="tramite"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="text-container bg-color-blanco" >
+                                <p class="selected-option">Tramite</p>
+                            </div>
+
+                            <div class="dropdown-icon bg-color-blanco">
+                                <img src="<%= request.getContextPath() %>/img/selectarrow.svg" alt="Ícono de computadora" loading="lazy">
+                            </div>
+
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="tramite">
+                            <button class="dropdown-item" href="#">Seleccionar</button>
+                            <button class="dropdown-item" href="#">Toma Fotografia</button>
+                            <button class="dropdown-item" href="#">Entrega DNI Electronico</button>
+                            <button class="dropdown-item" href="#">Tramite de DNI mayor</button>
+                            <button class="dropdown-item" href="#">Tramite de DNI menor</button>
+                            <button class="dropdown-item" href="#">Entregas DNI</button>
+                            <button class="dropdown-item" href="#">INSCRIPCION DE REGISTROS CIVILES</button>
+                            <button class="dropdown-item" href="#">CERTIFICACION DE REGISTROS CIVILES</button>
+                            <button class="dropdown-item" href="#">CERTIFICACION DEL RUIPN</button>
+                            <button class="dropdown-item" href="#">EREP</button>
+                        </div>
+
+                    </div>
+            </div>
+
+            <%   }
+            %>
+
+        <div class="r-c-<%= tipoForm %>-cuerpo">
+            <div class="r-c-<%= tipoForm %>-mapa">
+                <div id="map"></div>
+            </div>
+            <div class="r-c-<%= tipoForm %>-cards r-j-<%= tipoForm %>-cards" id="resultadoInformacion">
+
+            </div>
+        </div>
     </div>
-
-    <div class="default-skin row" id="addressInformation"></div>
-
-    <div id="map"></div>
-</div>
+</section>
 
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A&callback=initMap"></script>
 
-
 <script type="text/javascript">
 
     $( document ).ready(function() {
-        <portlet:namespace />getCargaDepartamento();
+
+        $(".r-j-input-distrito").on("input", function() {
+            let inputValue = $(this).val().toLowerCase();
+            let autocompleteList = $(".autocomplete-list");
+            autocompleteList.empty();
+
+            districts.forEach(function(district) {
+                if (district.toLowerCase().startsWith(inputValue)) {
+                    $("<li>").text(district).appendTo(autocompleteList);
+                }
+            });
+
+            if (inputValue.length > 0) {
+                autocompleteList.show();
+            } else {
+                autocompleteList.hide();
+            }
+        });
 
         $("#map").show();
-        var locations = [];
-        locations.push({
-            lat:Number(-12.068352795386877),
-            lng:Number(-77.04771625774335),
-            storeName:"value.storeName",
-            address1:"value.address1",
-            city:"value.city",
-            state:"value.state",
-            country:"value.country",
-            zip:"value.zip",
-            phone:"value.phone"
-        });
-        initMap(locations);
 
-
-
+        filterMapByDistrito(<%= sedePrincipal %>);
+        <portlet:namespace />getCargaDepartamento();
+        <portlet:namespace />getListaAutocomplete()
 
     });
 
-    function initMap(locations) {
+    let districts = [];
+
+    function <portlet:namespace />getListaAutocomplete(){
+        $.ajax({
+            url :"<%= getDepartamentoURL %>",
+            data:{
+                <portlet:namespace />cmd: "listaautocompletado"
+            },
+            success: function(data) {
+                districts = [];
+                //console.log(data.searchResults);
+                $.each(data.searchResults, function (key, value) {
+                    districts.push(value.distrito);
+                });
+            }
+        });
+    }
+
+    function <portlet:namespace />getCargaDepartamento() {
+        $.ajax({
+            url :"<%= getDepartamentoURL %>",
+            data:{
+                <portlet:namespace />cmd: "departamento"
+            },
+            success: function(data) {
+                //console.log(data.searchResults);
+
+                $.each(data.searchResults, function (key, value) {
+
+                    $('#selectorDepartamento').append($("<button/>", {
+                        class: 'dropdown-item departamento',
+                        href: '#',
+                        value: value.codigo,
+                        text: value.departamento
+                    }));
+
+                });
+
+                $('.departamento').on('click', function() {
+                    let selectedOption = $(this).text();
+                    let dropdownButton = $(this).closest('.r-o-dropdown').find('.dropdown-toggle');
+                    $(this).siblings().removeClass('selected');
+
+                    dropdownButton.find('.selected-option').text(selectedOption);
+                    $(this).addClass('selected');
+                    <portlet:namespace />getCargaProvincia($(this).val());
+                });
+
+            }
+        });
+    }
+
+    function <portlet:namespace />getCargaProvincia(codDepartamento) {
+        //console.log(codDepartamento);
+
+        $.ajax({
+            url :"<%= getDepartamentoURL %>",
+            data:{
+                <portlet:namespace />cmd: "provincia",
+                <portlet:namespace />codDepartamento: codDepartamento
+            },
+            success: function(data) {
+                //console.log(data.searchResults);
+                $('#selectorProvincia').empty();
+                $.each(data.searchResults, function (key, value) {
+
+                    $('#selectorProvincia').append($("<button/>", {
+                        class: 'dropdown-item provincia',
+                        href: '#',
+                        value: value.codigo,
+                        text: value.provincia
+                    }));
+                });
+
+                $('.provincia').on('click', function() {
+                    let selectedOption = $(this).text();
+                    let dropdownButton = $(this).closest('.r-o-dropdown').find('.dropdown-toggle');
+                    $(this).siblings().removeClass('selected');
+
+                    dropdownButton.find('.selected-option').text(selectedOption);
+                    $(this).addClass('selected');
+                    <portlet:namespace />getCargaDistrito($(this).val());
+
+
+                });
+
+            }
+        });
+    }
+
+    function <portlet:namespace />getCargaDistrito(codProvincia) {
+        console.log(codProvincia);
+
+        $.ajax({
+            url :"<%= getDepartamentoURL %>",
+            data:{
+                <portlet:namespace />cmd: "distrito",
+                <portlet:namespace />codProvincia: codProvincia
+            },
+            success: function(data) {
+                console.log(data.searchResults);
+
+                $('#selectorDistrito').empty();
+
+                $.each(data.searchResults, function (key, value) {
+
+                    $('#selectorDistrito').append($("<button/>", {
+                        class: 'dropdown-item distrito',
+                        href: '#',
+                        value: value.codigo,
+                        text: value.distrito
+                    }));
+                });
+
+                $('.distrito').on('click', function() {
+                    let selectedOption = $(this).text();
+                    let dropdownButton = $(this).closest('.r-o-dropdown').find('.dropdown-toggle');
+                    $(this).siblings().removeClass('selected');
+
+                    dropdownButton.find('.selected-option').text(selectedOption);
+                    $(this).addClass('selected');
+                });
+
+            }
+        });
+    }
+
+    function initMap(latitude, longitude,locations) {
+        $('#resultadoInformacion').empty();
+        $.each( locations, function( key, value ) {
+            console.log(value);
+
+
+            $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+                " <div class='card-item__header'>" +
+                "<img src='./../img/iconos/azules/computador.svg' alt='' loading='lazy'><h4 class='card-item__h-principal color-titulo-primario-azul'>"+value.centroDeAtencion+"</h4>" +
+                "</div>" +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + value.nombreDeVia +
+                "</p>" +
+                "</div>");
+
+        });
+
+
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 13,
-            center: {lat: Number(-12.082485636330079), lng: Number(-77.05031392249481)}
+            center: {lat: Number(latitude), lng: Number(longitude)}
         });
 
 
@@ -105,12 +356,12 @@
             marker = new google.maps.Marker({
                 position: location,
                 label: labels[i % labels.length],
-                title: location.storeName
+                title: location.centroDeAtencion
             });
 
             google.maps.event.addListener(marker, 'click', (function(marker, i) {
                 return function() {
-                    infowindow.setContent('<div><strong>'+location.storeName+'</div></strong><div>'+location.address1+','+'</div><div>'+location.city+','+'</div><div>'+location.state+','+'</div><div>'+location.country+','+'</div><div>'+location.zip+'</div><div> Phone : '+location.phone+'</div>' );
+                    infowindow.setContent('<div><strong>'+location.centroDeAtencion+'</div></strong><div>'+location.nombreDeVia+','+'</div>' );
                     infowindow.open(map, marker);
                 }
             })(marker, i));
@@ -121,54 +372,69 @@
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     }
 
+    function getSede() {
 
+        if($.trim($("#distrito-input").val()).length !== 0){
 
-    function <portlet:namespace />getCargaDepartamento() {
-        //alert("PRIMER AJAX");
+            var selectdistrito = $("#distrito-input").val();
+            $.ajax({
+                url :"<%= getSedesURL %>",
+                data:{
+                    <portlet:namespace />cmd: "distrito",
+                    <portlet:namespace />nombredistrito: selectdistrito
+                },
+                success: function(data) {
+                    console.log(data.searchResults);
+                    filterMapByDistrito(data.searchResults[0].codigo);
+                }
+            });
+
+        } else {
+            var selectDistrito = '';
+
+            $('.distrito').each(function(indice, elemento) {
+                if($(elemento).hasClass('selected')){
+                    selectDistrito = $(elemento).val();
+                }
+            });
+
+            if($('.distrito').hasClass('selected')){
+                filterMapByDistrito(selectDistrito);
+            }
+        }
+    }
+
+    function  filterMapByDistrito(selectDistrito){
+        var codigotramite = $('.distrito').val();
+
         $.ajax({
-            url :"<%= getDepartamentoURL %>",
+            url :"<%= getSedesURL %>",
             data:{
-                <portlet:namespace />cmd: "departamento"
+                <portlet:namespace />cmd: "sede",
+                <portlet:namespace />codigoUbigeo: selectDistrito,
+                <portlet:namespace />codigotramite: codigotramite
             },
             success: function(data) {
-                var content= JSON.parse(data);
-                alert("PRIMER AJAX-52");
+                //console.log(data.searchResults);
+
+                if(data.searchResults.length>0) {
+                    var locations = [];
+
+                    $.each( data.searchResults, function( key, value ) {
+                        locations.push({
+                            lat:Number(value.latitud),
+                            lng:Number(value.longitud),
+                            centroDeAtencion:value.centroDeAtencion,
+                            nombreDeVia: value.nombreDeVia
+
+                        });
+                    });
+
+                    initMap(locations[0].lat,locations[0].lng,locations);
+                }
+
             }
         });
     }
-
-    function <portlet:namespace />getCargaProvincia(departamento) {
-        $.ajax({
-            url :"<%= getDepartamentoURL %>",
-            data:{
-                <portlet:namespace />departamento: departamento,
-            },
-            success: function(data) {
-                var content= JSON.parse(data);
-
-            }
-        });
-    }
-
-    function <portlet:namespace />getCargaDistrito(distrito) {
-        $.ajax({
-            url :"<%= getDepartamentoURL %>",
-            data:{
-                <portlet:namespace />distrito: distrito,
-            },
-            success: function(data) {
-                var content= JSON.parse(data);
-
-            }
-        });
-    }
-
-
-
-
-
-
-
-
 
 </script>

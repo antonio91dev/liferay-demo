@@ -1,4 +1,4 @@
-package sede.location.mapa.model;
+package com.vass.reniec.pe.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,19 +10,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "items" })
-public class UbigeoSearchResponse {
+public class OficinaSearchResponse {
 
     @JsonProperty("items")
-    private List<Ubigeo> items = null;
+    private List<Oficina> items = null;
 
 
     @JsonProperty("items")
-    public List<Ubigeo> getItems() {
+    public List<Oficina> getItems() {
         return items;
     }
 
     @JsonProperty("items")
-    public void setItems(List<Ubigeo> items) {
+    public void setItems(List<Oficina> items) {
         this.items = items;
     }
 }

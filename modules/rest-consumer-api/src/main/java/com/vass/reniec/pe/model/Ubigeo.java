@@ -1,4 +1,4 @@
-package sede.location.mapa.model;
+package com.vass.reniec.pe.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Ubigeo {
+
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("distrito")
     private String distrito;
@@ -56,5 +59,15 @@ public class Ubigeo {
     @JsonProperty("provincia")
     public void setProvincia(String provincia) {
         this.provincia = provincia;
+    }
+
+    @JsonProperty("id")
+    public String getId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 }

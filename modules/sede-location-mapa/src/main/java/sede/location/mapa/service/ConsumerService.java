@@ -1,13 +1,15 @@
 package sede.location.mapa.service;
 
 
-import sede.location.mapa.model.Ubigeo;
+import com.vass.reniec.pe.model.Oficina;
+import com.vass.reniec.pe.model.Ubigeo;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ConsumerService {
 
-    public List<Ubigeo> getUbigeo();
+    public List<Ubigeo> getUbigeo(String filter);
+
+    public List<Oficina> getOficina(String filter);
 
 }

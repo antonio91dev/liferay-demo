@@ -41,13 +41,13 @@ public class RestConsumerService implements RestConsumer {
 	}
 
 	@Override
-	public String get(String endpoint, Credentials credentials, String body) {
+	public String get(String endpoint, Credentials credentials, String body, String filter) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<String> entity = getEntity(credentials, body);
 
 		ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		try {
-			response = restTemplate.exchange(endpoint, HttpMethod.GET, entity, String.class);
+			response = restTemplate.exchange(endpoint + filter, HttpMethod.GET, entity, String.class);
 		} catch (Exception e) {
 			_log.error(e);
 		}
@@ -61,11 +61,9 @@ public class RestConsumerService implements RestConsumer {
 		HttpEntity<String> entity = getEntity(credentials, body);
 
 		ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		try {
+
 			response = restTemplate.exchange(endpoint, HttpMethod.POST, entity, String.class);
-		} catch (Exception e) {
-			_log.error(e);
-		}
+
 
 		return response.getBody();
 

@@ -6,16 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.vass.reniec.pe.api.RestConsumer;
-import com.vass.reniec.pe.model.Credentials;
+import com.vass.reniec.pe.model.*;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import sede.location.mapa.model.Ubigeo;
-import sede.location.mapa.model.UbigeoSearchResponse;
 import sede.location.mapa.service.ConsumerService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component(immediate = true, service = ConsumerService.class)
 public class ConsumerServiceImpl implements ConsumerService {
@@ -33,10 +30,9 @@ public class ConsumerServiceImpl implements ConsumerService {
     protected  ObjectMapper objectMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public List<Ubigeo> getUbigeo() {
+    public List<Ubigeo> getUbigeo(String filter) {
 
-        String response = restConsumer.get("http://localhost:8080/o/c/ubigeos?pageSize=-1", credentials,
-                null);
+        String response = restConsumer.get("http://localhost:8080/o/c/ubigeos", credentials,  null,filter);
 
         UbigeoSearchResponse ubigeoSearchResponse = new UbigeoSearchResponse();
         try {
@@ -46,6 +42,23 @@ public class ConsumerServiceImpl implements ConsumerService {
         }
 
         return ubigeoSearchResponse.getItems();
+    }
+
+    @Override
+    public List<Oficina> getOficina(String filter) {
+
+
+        String response = restConsumer.get("http://localhost:8080/o/c/oficinas?pageSize=-1", credentials,
+                null,filter);
+
+        OficinaSearchResponse oficinaSearchResponse = new OficinaSearchResponse();
+        try {
+            oficinaSearchResponse = objectMapper.readValue(response, OficinaSearchResponse.class);
+        } catch (JsonProcessingException e) {
+            _log.error(e);
+        }
+
+        return oficinaSearchResponse.getItems();
     }
 
 }
