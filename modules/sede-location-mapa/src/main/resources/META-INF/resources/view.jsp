@@ -11,14 +11,15 @@
 
 <section class="container bg-color-blanco">
     <div class="r-c-<%= tipoForm %>">
-
-
+        <div class="r-c-mapaoficina-header">
+            <h2 class="r-c-mapaoficina__h-principal color-titulo-primario-azul">Oficinas y horario</h2>
+            <h3 class="r-c-mapaoficina__h-secundario color-titulo-gris-3">Encuentre aqu&iacute; la ubicaci&oacute;n de nuestras oficinas y el horario de atenci&oacute;n</h3>
+        </div>
         <%
             // Set balance and formatted balance as session attributes.
             if(tipoForm.equals("mapaoficina"))
             {
         %>
-
         <div class="r-c-<%= tipoForm %>-search">
             <div class="r-c-mapaoficina-search__input">
                 <input
@@ -147,7 +148,6 @@
 
             </div>
         </div>
-
         <%   }
         %>
 
@@ -161,9 +161,6 @@
         </div>
     </div>
 </section>
-
-
-<%= googleAPIKey %>
 
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= googleAPIKey %>&callback=initMap"></script>
