@@ -1,27 +1,27 @@
 package com.vass.reniec.pe.sede.administration.portlet;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.*;
 
+import com.vass.reniec.pe.model.Oficina;
 import com.vass.reniec.pe.sede.administration.constants.SedeAdministrationPortletKeys;
 import com.vass.reniec.pe.sede.administration.service.ConsumerService;
 import com.vass.reniec.pe.sede.administration.util.CSVImportFileUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
-import javax.portlet.PortletException;
+import javax.portlet.*;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -76,6 +76,8 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 					JSONArray csvDataArray = CSVImportFileUtil.readCSVFile(
 							csvFile,objetoImportar);
 
+
+
 					if(objetoImportar.equalsIgnoreCase("UBIGEO")){
 
 						log.info("Se procedera a importar el objeto : " + objetoImportar);
@@ -84,8 +86,18 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 					}else if(objetoImportar.equalsIgnoreCase("OFICINA")){
 
 						log.info("Se procedera a importar el objeto : " + objetoImportar);
-						JSONObject JSONObject = consumerService.addOficina(csvDataArray, actionRequest);
+						JSONObject JSONObject = consumerService.addOficina(csvDataArray);
+
 					}
+
+/*					StringBundler sb = new StringBundler();
+					sb.setIndex(sb.index() - 1);
+					sb.append(CharPool.NEW_LINE);
+
+					byte[] bytes = sb.toString().getBytes();
+					String contentType = ContentTypes.APPLICATION_TEXT;
+					PortletResponseUtil.sendFile((PortletRequest) actionRequest, (MimeResponse) actionResponse,"FILENAME", bytes, contentType);
+*/
 				}
 				else {
 					log.error(
@@ -97,11 +109,9 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 
 
 		}
-		catch (Exception exception) {
-			log.error(exception,exception);
-
-			SessionErrors.add(actionRequest, exception.getClass());
-
+		catch (Exception e) {
+			log.error(e);
+			SessionErrors.add(actionRequest, e.getClass());
 		}
 	}
 

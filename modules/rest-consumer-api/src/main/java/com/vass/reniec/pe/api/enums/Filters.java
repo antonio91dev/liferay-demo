@@ -10,6 +10,7 @@ public enum Filters {
     , EMAIL_ADDRESS("emailAddress")
     , LIFERAY_COMPANY_ID("liferayCompanyId")
     , PAGE_SIZE("pageSize")
+    , KEY("Key")
     , SORT("sort")
     , ASC("asc")
     , DESC("desc")

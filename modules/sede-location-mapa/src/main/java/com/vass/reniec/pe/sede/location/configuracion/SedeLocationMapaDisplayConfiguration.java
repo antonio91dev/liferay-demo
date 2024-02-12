@@ -15,7 +15,21 @@ public interface SedeLocationMapaDisplayConfiguration {
     public String tipoForm();
 
     @Meta.AD(required = false)
+    public String ubicacionPrincipal();
+
+    @Meta.AD(required = false)
     public String googleAPIKey();
+
+
+    @Meta.AD(required = false)
+    public String latitud();
+
+    @Meta.AD(required = false)
+    public String longitud();
+
+
+
+
 
 
 

@@ -17,6 +17,8 @@
 --%>
 
 <%@ page import="com.liferay.portal.kernel.util.Constants" %>
+<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %>
+<%@ page import="com.liferay.google.places.constants.GooglePlacesWebKeys" %>
 
 <%@ include file="/init.jsp" %>
 
@@ -44,8 +46,11 @@
     />
 
     <aui:fieldset>
+        <aui:input name="longitud" type="hidden" value="<%= longitud %>"/>
+        <aui:input name="latitud" type="hidden" value="<%= latitud %>"/>
 
-        <aui:input class="form-control" label="" name="googleAPIKey" required="true" type="text" value="<%= googleAPIKey %>">
+
+        <aui:input class="form-control" label="Api Key Google" name="googleAPIKey" required="true" type="text" value="<%= googleAPIKey %>">
             <aui:validator name="maxLength">256</aui:validator>
         </aui:input>
 
@@ -58,19 +63,104 @@
             <aui:option value="mapaoficina">Mapa Oficinas</aui:option>
         </aui:select>
 
+        <aui:input class="form-control" label="Ubicacion Principal" name="ubicacionPrincipal" required="true" type="text" value="<%= ubicacionPrincipal %>">
+            <aui:validator name="maxLength">256</aui:validator>
+        </aui:input>
 
 
-        <aui:select
-                label="Elegir Sede"
-                name="sedePrincipal"
-                value="<%= sedePrincipal %>"
-        >
-            <aui:option value="140101">SEDE PRINCIPAL</aui:option>
-            <aui:option value="">SIN SEDE</aui:option>
-        </aui:select>
+
+
+
     </aui:fieldset>
 
     <aui:button-row>
         <aui:button type="submit"></aui:button>
     </aui:button-row>
 </aui:form>
+
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A&callback=initAutocomplete&libraries=places&v=weekly"
+        defer
+></script>
+
+<script type="text/javascript">
+
+    function initAutocomplete() {
+        /*const map = new google.maps.Map(document.getElementById("map"), {
+            mapTypeId: "roadmap",
+        });*/
+        // Create the search box and link it to the UI element.
+        const input = document.getElementById("<portlet:namespace />ubicacionPrincipal");
+        const searchBox = new google.maps.places.SearchBox(input);
+
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        // Bias the SearchBox results towards current map's viewport.
+        /* map.addListener("bounds_changed", () => {
+             console.log(map.getBounds());
+             searchBox.setBounds(map.getBounds());
+         });*/
+
+        //let markers = [];
+
+        // [START maps_places_searchbox_getplaces]
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener("places_changed", () => {
+            const places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            //markers.forEach((marker) => {
+            //    marker.setMap(null);
+            //});
+            //markers = [];
+
+            // For each place, get the icon, name and location.
+            const bounds = new google.maps.LatLngBounds();
+
+            places.forEach((place) => {
+                console.log(place);
+                if (!place.geometry || !place.geometry.location) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+
+                const icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25),
+                };
+
+                // Create a marker for each place.
+                /*markers.push(
+                    new google.maps.Marker({
+                        map,
+                        icon,
+                        title: place.name,
+                        position: place.geometry.location,
+                    }),
+                );*/
+
+                console.log("" + place.geometry.location);
+                console.log("" + place.geometry.location.lat);
+                $('#<portlet:namespace />latitud').val(place.geometry.location.lat);
+                console.log("" + place.geometry.location.lng);
+                $('#<portlet:namespace />longitud').val(place.geometry.location.lng);
+
+                console.log("" + place.geometry.viewport);
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            //map.fitBounds(bounds);
+        });
+    }
+</script>

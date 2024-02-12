@@ -11,5 +11,9 @@ public interface RestConsumer {
 
     public String post(String endpoint, Credentials credentials, String body);
 
+    public String delete(String endpoint, Credentials credentials, String body);
+
     public String patch(String endpoint, Credentials credentials, String body);
+
+    public String getGoogleApi(String endpoint, String filter);
 }

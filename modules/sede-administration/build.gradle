@@ -4,4 +4,8 @@ dependencies {
 
 	compileOnly project(":modules:rest-consumer-api")
 	cssBuilder group: "com.liferay", name: "com.liferay.css.builder", version: "3.1.4"
+
+	compileInclude 'com.google.maps:google-maps-services:2.2.0'
+	compileInclude 'org.slf4j:slf4j-simple:1.7.25'
+
 }

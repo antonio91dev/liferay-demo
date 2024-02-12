@@ -8,7 +8,8 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
-taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
+        taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <liferay-theme:defineObjects />
 
@@ -26,13 +27,24 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
     String tipoForm = StringPool.BLANK;
     String sedePrincipal = StringPool.BLANK;
     String googleAPIKey= StringPool.BLANK;
+    String ubicacionPrincipal= StringPool.BLANK;
+    String longitud= StringPool.BLANK;
+    String latitud= StringPool.BLANK;
+
+
+
     if (messageDisplayConfiguration != null) {
         tipoForm = portletPreferences.getValue("tipoForm", messageDisplayConfiguration.tipoForm());
 
         sedePrincipal = portletPreferences.getValue("sedePrincipal", messageDisplayConfiguration.sedePrincipal());
 
-        googleAPIKey = portletPreferences.getValue("googleAPIKey", messageDisplayConfiguration.sedePrincipal());
+        googleAPIKey = portletPreferences.getValue("googleAPIKey", messageDisplayConfiguration.googleAPIKey());
 
+        ubicacionPrincipal = portletPreferences.getValue("ubicacionPrincipal", messageDisplayConfiguration.ubicacionPrincipal());
+
+        longitud = portletPreferences.getValue("longitud", messageDisplayConfiguration.longitud());
+
+        latitud = portletPreferences.getValue("latitud", messageDisplayConfiguration.latitud());
 
 
     }

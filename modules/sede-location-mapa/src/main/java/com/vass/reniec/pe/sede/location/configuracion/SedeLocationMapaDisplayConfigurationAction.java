@@ -54,7 +54,10 @@ import java.util.Map;
         String sedePrincipal = ParamUtil.getString(actionRequest, "sedePrincipal");
         String tipoForm = ParamUtil.getString(actionRequest, "tipoForm");
         String googleAPIKey = ParamUtil.getString(actionRequest, "googleAPIKey");
+        String longitud = ParamUtil.getString(actionRequest, "longitud");
+        String latitud = ParamUtil.getString(actionRequest, "latitud");
 
+        String ubicacionPrincipal = ParamUtil.getString(actionRequest, "ubicacionPrincipal");
 
         if (_log.isInfoEnabled()) {
             _log.info(
@@ -67,7 +70,10 @@ import java.util.Map;
         setPreference(actionRequest, "sedePrincipal", sedePrincipal);
         setPreference(actionRequest, "tipoForm", tipoForm);
         setPreference(actionRequest, "googleAPIKey", googleAPIKey);
+        setPreference(actionRequest, "ubicacionPrincipal", ubicacionPrincipal);
 
+        setPreference(actionRequest, "longitud", longitud);
+        setPreference(actionRequest, "latitud", latitud);
 
         super.processAction(portletConfig, actionRequest, actionResponse);
     }

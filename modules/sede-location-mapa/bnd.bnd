@@ -2,5 +2,5 @@ Bundle-Name: sede-location-mapa
 Bundle-SymbolicName: com.vass.reniec.pe.sede.location
 Bundle-Version: 1.0.0
 Export-Package: com.vass.reniec.pe.sede.location.constants
-Import-Package: \
-	*
+Import-Package: *;resolution:=optional
+-fixupmessages "Classes found in the wrong directory"; restrict:=error; is:=warning

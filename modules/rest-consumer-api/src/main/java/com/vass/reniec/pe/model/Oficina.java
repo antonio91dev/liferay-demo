@@ -10,19 +10,30 @@ import java.util.Map;
 @JsonPropertyOrder({"centroDeAtencion", "horarioDeAtencion", "latitud", "longitud", "nombreDeVia", "r_ubigeo_c_ubigeoId", "tipoDeVia",
         "tramiteCERRciviles", "tramiteCERRuipn", "tramiteDNIEntrega"
         , "tramiteDNIMayor", "tramiteDNIMenor", "tramiteElectronico"
-        , "tramiteEREP", "tramiteFotografia", "tramiteINSRciviles"})
+        , "tramiteEREP", "tramiteFotografia", "tramiteINSRciviles","id"})
 public class Oficina {
 
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
-
+    @JsonProperty("id")
+    private Long OficinaId;
     @JsonProperty("centroDeAtencion")
     private String centroDeAtencion;
 
     @JsonProperty("horarioDeAtencion")
     private String horarioDeAtencion;
+
+    @JsonProperty("centralTelefonico")
+    private String centralTelefonico;
+
+    @JsonProperty("representante")
+    private String representante;
+
+    @JsonProperty("correo")
+    private String correo;
+
 
     @JsonProperty("tipoDeVia")
     private String tipoDeVia;
@@ -38,7 +49,7 @@ public class Oficina {
 
 
     @JsonProperty("r_ubigeo_c_ubigeoId")
-    private Long ubigeoId;
+    private int ubigeoId;
 
 
 
@@ -139,12 +150,12 @@ public class Oficina {
     }
 
     @JsonProperty("r_ubigeo_c_ubigeoId")
-    public Long getUbigeoId() {
+    public int getUbigeoId() {
         return ubigeoId;
     }
 
     @JsonProperty("r_ubigeo_c_ubigeoId")
-    public void setUbigeoId(Long ubigeoId) {
+    public void setUbigeoId(int ubigeoId) {
         this.ubigeoId = ubigeoId;
     }
 
@@ -232,6 +243,47 @@ public class Oficina {
     @JsonProperty("tramiteINSRciviles")
     public void setTramiteINSRciviles(Boolean tramiteINSRciviles) {
         this.tramiteINSRciviles = tramiteINSRciviles;
+    }
+
+
+    @JsonProperty("centralTelefonico")
+    public String getCentralTelefonico() {
+        return centralTelefonico;
+    }
+
+
+    @JsonProperty("centralTelefonico")
+    public void setCentralTelefonico(String centralTelefonico) {
+        this.centralTelefonico = centralTelefonico;
+    }
+
+    @JsonProperty("representante")
+    public String getRepresentante() {
+        return representante;
+    }
+
+    @JsonProperty("representante")
+    public void setRepresentante(String representante) {
+        this.representante = representante;
+    }
+
+    @JsonProperty("correo")
+    public String getCorreo() {
+        return correo;
+    }
+
+    @JsonProperty("correo")
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    @JsonProperty("id")
+    public Long getOficinaId() {
+        return OficinaId;
+    }
+    @JsonProperty("id")
+    public void setOficinaId(Long oficinaId) {
+        OficinaId = oficinaId;
     }
 }
 

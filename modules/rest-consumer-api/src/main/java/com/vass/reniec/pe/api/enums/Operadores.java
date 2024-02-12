@@ -44,4 +44,20 @@ public enum Operadores {
                 pageSize, Operadores.SIGN_AND.getOperator(), Filters.SORT.getFilter(),
                 Operadores.SIGN_EQUAL.getOperator(), sort, Operadores.SIGN_DOUBLEPOINTS.getOperator(), order);
     }
+
+    public static String addFilterPageSizeandSort(String field, Operadores filter, String value, int pageSize,
+                                                  String orderField, String order) {
+        return String.format("?filter=%s %s '%s'%s%s%s%d%s%s%s%s%s%s", field, filter.getOperator(), value,
+                Operadores.SIGN_AND.getOperator(), Filters.PAGE_SIZE.getFilter(), Operadores.SIGN_EQUAL.getOperator(),
+                pageSize, Operadores.SIGN_AND.getOperator(), Filters.SORT.getFilter(),
+                Operadores.SIGN_EQUAL.getOperator(), orderField, Operadores.SIGN_DOUBLEPOINTS.getOperator(), order);
+    }
+
+    public static String addFilterAndKey(String field,  String KeyValue) {
+        return String.format("?address='%s'%s%s%s%s", field, Operadores.SIGN_AND.getOperator(),Filters.KEY.getFilter(),Operadores.SIGN_EQUAL.getOperator(), KeyValue);
+    }
+
+    //?address='Talara N° 130 RENIEC' & Key 'AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A'
+    //?address=Talara N° 130 RENIEC & 'AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A'
+    //?address='Talara N° 130 RENIEC'&key=AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A"
 }

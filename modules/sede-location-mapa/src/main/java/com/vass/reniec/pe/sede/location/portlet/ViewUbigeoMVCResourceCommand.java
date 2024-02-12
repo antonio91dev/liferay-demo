@@ -1,6 +1,11 @@
 package com.vass.reniec.pe.sede.location.portlet;
 
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
+import com.liferay.ip.geocoder.IPGeocoder;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -36,12 +41,19 @@ public class ViewUbigeoMVCResourceCommand implements MVCResourceCommand{
 
     private Log _log = LogFactoryUtil.getLog(ViewUbigeoMVCResourceCommand.class);
 
+
+
     @Override
     public boolean serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) throws PortletException {
 
         if (_log.isInfoEnabled()) {
             _log.info("serveResource ");
         }
+
+
+        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        //System.out.println(gson.toJson(results[0].addressComponents));
+
 
         String command = ParamUtil.getString(resourceRequest, "cmd");
 

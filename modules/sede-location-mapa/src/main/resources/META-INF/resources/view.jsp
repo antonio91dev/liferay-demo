@@ -13,143 +13,143 @@
     <div class="r-c-<%= tipoForm %>">
 
 
-            <%
-                // Set balance and formatted balance as session attributes.
-                if(tipoForm.equals("mapaoficina"))
-                {
-            %>
+        <%
+            // Set balance and formatted balance as session attributes.
+            if(tipoForm.equals("mapaoficina"))
+            {
+        %>
 
-                <div class="r-c-<%= tipoForm %>-search">
-                    <div class="r-c-mapaoficina-search__input">
-                        <input
-                                type="text"
-                                id="distrito-input"
-                                name="distrito"
-                                class="r-j-input-distrito"
-                                placeholder="Ingresa el Distrito en el que te encuentras"
-                                aria-label="Distrito"
-                        />
+        <div class="r-c-<%= tipoForm %>-search">
+            <div class="r-c-mapaoficina-search__input">
+                <input
+                        type="text"
+                        id="distrito-input"
+                        name="distrito"
+                        class="r-j-input-distrito"
+                        placeholder="Ingresa el Distrito en el que te encuentras"
+                        aria-label="Distrito"
+                />
+                <img
+                        src="<%= request.getContextPath() %>/img/computador.svg"
+                        alt="Ícono de computadora"
+                        loading="lazy"
+                />
+                <ul class="autocomplete-list"></ul>
+
+            </div>
+
+            <button onclick="getSede();" class="r-c-mapaoficina-search__button btn r-o-button r-o-button__primary">
+                Buscar
+            </button>
+        </div>
+        <div class="r-c-<%= tipoForm %>-filter">
+            <div class="dropdown r-o-dropdown">
+                <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="departamento"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
+                    <div class="text-container bg-color-blanco">
+                        <p class="selected-option">Departamento</p>
+                    </div>
+
+                    <div class="dropdown-icon bg-color-blanco">
                         <img
-                                src="<%= request.getContextPath() %>/img/computador.svg"
+                                src="<%= request.getContextPath() %>/img/selectarrow.svg"
                                 alt="Ícono de computadora"
                                 loading="lazy"
                         />
-                        <ul class="autocomplete-list"></ul>
-
                     </div>
-
-                    <button onclick="getSede();" class="r-c-mapaoficina-search__button btn r-o-button r-o-button__primary">
-                        Buscar
-                    </button>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="departamento" id="selectorDepartamento">
                 </div>
-            <div class="r-c-<%= tipoForm %>-filter">
-                    <div class="dropdown r-o-dropdown">
-                        <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                id="departamento"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <div class="text-container bg-color-blanco">
-                                <p class="selected-option">Departamento</p>
-                            </div>
-
-                            <div class="dropdown-icon bg-color-blanco">
-                                <img
-                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
-                                        alt="Ícono de computadora"
-                                        loading="lazy"
-                                />
-                            </div>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="departamento" id="selectorDepartamento">
-                        </div>
-                    </div>
-
-
-                    <div class="dropdown r-o-dropdown">
-                        <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                id="departamento2"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <div class="text-container bg-color-blanco">
-                                <p class="selected-option">Provincia</p>
-                            </div>
-
-                            <div class="dropdown-icon bg-color-blanco">
-                                <img
-                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
-                                        alt="Ícono de computadora"
-                                        loading="lazy"
-                                />
-                            </div>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="departamento2" id="selectorProvincia">
-                        </div>
-                    </div>
-
-
-                    <div class="dropdown r-o-dropdown">
-                        <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                id="departamento3"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                        >
-                            <div class="text-container bg-color-blanco">
-                                <p class="selected-option">Distrito</p>
-                            </div>
-
-                            <div class="dropdown-icon bg-color-blanco">
-                                <img
-                                        src="<%= request.getContextPath() %>/img/selectarrow.svg"
-                                        alt="Ícono de computadora"
-                                        loading="lazy"
-                                />
-                            </div>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="departamento3" id="selectorDistrito">
-                        </div>
-                    </div>
-
-                    <div class="dropdown r-o-dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="tramite"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <div class="text-container bg-color-blanco" >
-                                <p class="selected-option">Tramite</p>
-                            </div>
-
-                            <div class="dropdown-icon bg-color-blanco">
-                                <img src="<%= request.getContextPath() %>/img/selectarrow.svg" alt="Ícono de computadora" loading="lazy">
-                            </div>
-
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="tramite">
-                            <button class="dropdown-item" href="#">Seleccionar</button>
-                            <button class="dropdown-item" href="#">Toma Fotografia</button>
-                            <button class="dropdown-item" href="#">Entrega DNI Electronico</button>
-                            <button class="dropdown-item" href="#">Tramite de DNI mayor</button>
-                            <button class="dropdown-item" href="#">Tramite de DNI menor</button>
-                            <button class="dropdown-item" href="#">Entregas DNI</button>
-                            <button class="dropdown-item" href="#">INSCRIPCION DE REGISTROS CIVILES</button>
-                            <button class="dropdown-item" href="#">CERTIFICACION DE REGISTROS CIVILES</button>
-                            <button class="dropdown-item" href="#">CERTIFICACION DEL RUIPN</button>
-                            <button class="dropdown-item" href="#">EREP</button>
-                        </div>
-
-                    </div>
             </div>
 
-            <%   }
-            %>
+
+            <div class="dropdown r-o-dropdown">
+                <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="departamento2"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
+                    <div class="text-container bg-color-blanco">
+                        <p class="selected-option">Provincia</p>
+                    </div>
+
+                    <div class="dropdown-icon bg-color-blanco">
+                        <img
+                                src="<%= request.getContextPath() %>/img/selectarrow.svg"
+                                alt="Ícono de computadora"
+                                loading="lazy"
+                        />
+                    </div>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="departamento2" id="selectorProvincia">
+                </div>
+            </div>
+
+
+            <div class="dropdown r-o-dropdown">
+                <button
+                        class="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        id="departamento3"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
+                    <div class="text-container bg-color-blanco">
+                        <p class="selected-option">Distrito</p>
+                    </div>
+
+                    <div class="dropdown-icon bg-color-blanco">
+                        <img
+                                src="<%= request.getContextPath() %>/img/selectarrow.svg"
+                                alt="Ícono de computadora"
+                                loading="lazy"
+                        />
+                    </div>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="departamento3" id="selectorDistrito">
+                </div>
+            </div>
+
+            <div class="dropdown r-o-dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="tramite"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="text-container bg-color-blanco" >
+                        <p class="selected-option">Tramite</p>
+                    </div>
+
+                    <div class="dropdown-icon bg-color-blanco">
+                        <img src="<%= request.getContextPath() %>/img/selectarrow.svg" alt="Ícono de computadora" loading="lazy">
+                    </div>
+
+                </button>
+                <div class="dropdown-menu" aria-labelledby="tramite">
+                    <button class="dropdown-item" href="#">Seleccionar</button>
+                    <button class="dropdown-item" href="#">Toma Fotografia</button>
+                    <button class="dropdown-item" href="#">Entrega DNI Electronico</button>
+                    <button class="dropdown-item" href="#">Tramite de DNI mayor</button>
+                    <button class="dropdown-item" href="#">Tramite de DNI menor</button>
+                    <button class="dropdown-item" href="#">Entregas DNI</button>
+                    <button class="dropdown-item" href="#">INSCRIPCION DE REGISTROS CIVILES</button>
+                    <button class="dropdown-item" href="#">CERTIFICACION DE REGISTROS CIVILES</button>
+                    <button class="dropdown-item" href="#">CERTIFICACION DEL RUIPN</button>
+                    <button class="dropdown-item" href="#">EREP</button>
+                </div>
+
+            </div>
+        </div>
+
+        <%   }
+        %>
 
         <div class="r-c-<%= tipoForm %>-cuerpo">
             <div class="r-c-<%= tipoForm %>-mapa">
@@ -192,10 +192,14 @@
 
         $("#map").show();
 
-        filterMapByDistrito(<%= sedePrincipal %>);
-        <portlet:namespace />getCargaDepartamento();
-        <portlet:namespace />getListaAutocomplete()
 
+
+
+
+        var locations = [];
+        initMap(<%= latitud %>,<%= longitud %>,locations);
+        <portlet:namespace />getCargaDepartamento();
+        <portlet:namespace />getListaAutocomplete();
     });
 
     let districts = [];
@@ -327,10 +331,12 @@
 
     function initMap(latitude, longitude,locations) {
 
-        $('#resultadoInformacion').empty();
 
 
-        $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+
+        if(locations.length > 0){
+            $('#resultadoInformacion').empty();
+            $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
                 " <div class='card-item__header'>" +
                 "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
                 "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
@@ -347,12 +353,10 @@
                 "</p>" +
                 "</div>"+
                 "");
-
-
-
+        }
 
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 14,
+            zoom: 5,
             center: {lat: Number(latitude), lng: Number(longitude)}
         });
 
@@ -365,6 +369,8 @@
         var infowindow = new google.maps.InfoWindow();
         var marker, i;
         var markers = locations.map(function(location, i) {
+
+            map.zoom=10;
             marker = new google.maps.Marker({
                 position: location,
                 label: labels[i % labels.length],
@@ -375,23 +381,23 @@
                 return function() {
                     infowindow.setContent('<div><strong>'+location.centroDeAtencion+'</div></strong><div>'+location.nombreDeVia+','+'</div>' );
                     $('#resultadoInformacion').empty();
-                        $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
-                            " <div class='card-item__header'>" +
-                            "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
-                            "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
-                            "</div>" +
-                            "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.nombreDeVia +
-                            "</p>" +
-                            "</div>"+
-                            "<div class='card-item bg-color-blanco'>" +
-                            " <div class='card-item__header'>" +
-                            "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
-                            "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
-                            "</div>" +
-                            "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.centroDeAtencion +
-                            "</p>" +
-                            "</div>"+
-                            "");
+                    $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+                        " <div class='card-item__header'>" +
+                        "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                        "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
+                        "</div>" +
+                        "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.nombreDeVia +
+                        "</p>" +
+                        "</div>"+
+                        "<div class='card-item bg-color-blanco'>" +
+                        " <div class='card-item__header'>" +
+                        "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                        "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                        "</div>" +
+                        "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.centroDeAtencion +
+                        "</p>" +
+                        "</div>"+
+                        "");
 
 
                     infowindow.open(map, marker);
@@ -422,28 +428,28 @@
             });
 
         } else {
-            var selectDistrito = '';
+            var codigoUbigeo = '';
 
             $('.distrito').each(function(indice, elemento) {
                 if($(elemento).hasClass('selected')){
-                    selectDistrito = $(elemento).val();
+                    codigoUbigeo = $(elemento).val();
                 }
             });
 
             if($('.distrito').hasClass('selected')){
-                filterMapByDistrito(selectDistrito);
+                filterMapByDistrito(codigoUbigeo);
             }
         }
     }
 
-    function  filterMapByDistrito(selectDistrito){
+    function  filterMapByDistrito(codigoUbigeo){
         var codigotramite = $('.distrito').val();
 
         $.ajax({
             url :"<%= getSedesURL %>",
             data:{
                 <portlet:namespace />cmd: "sede",
-                <portlet:namespace />codigoUbigeo: selectDistrito,
+                <portlet:namespace />codigoUbigeo: codigoUbigeo,
                 <portlet:namespace />codigotramite: codigotramite
             },
             success: function(data) {

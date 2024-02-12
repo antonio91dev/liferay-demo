@@ -2,7 +2,6 @@ Bundle-Name: sede-administration
 Bundle-SymbolicName: com.vass.reniec.pe.sede.administration
 Bundle-Version: 1.0.0
 Export-Package: com.vass.reniec.pe.sede.administration.constants
-Import-Package:\
-	!org.apache.commons.csv*,\
-	*
+Import-Package: *;resolution:=optional
 Include-Resource: @commons-csv-1.4.jar
+-fixupmessages "Classes found in the wrong directory"; restrict:=error; is:=warning
