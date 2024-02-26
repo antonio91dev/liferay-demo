@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.Optional;
 
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.vass.reniec.pe.api.enums.Filters;
 import com.vass.reniec.pe.api.enums.Operadores;
 import com.vass.reniec.pe.model.Oficina;
@@ -44,41 +45,51 @@ public class CSVImportFileUtil {
 			CSVParser csvParser = csvFormat.parse(isr);
 			int i = 0;
 			for (CSVRecord csvRecord: csvParser.getRecords()) {
-				if(i > 0){
+
 					if(objetoImportar.equalsIgnoreCase("OFICINA")) {
-						log.info(csvParser.getRecordNumber());
-						Oficina oficina = new Oficina();
-						oficina.setUbigeoId(GetterUtil.getInteger(csvRecord.get(0)));
-						oficina.setCentralTelefonico(GetterUtil.getString(csvRecord.get(1)));
-						oficina.setRepresentante(GetterUtil.getString(csvRecord.get(2)));
-						oficina.setCorreo(GetterUtil.getString(csvRecord.get(3)));
-						oficina.setLatitud(GetterUtil.getString(csvRecord.get(4)));
-						oficina.setLongitud(GetterUtil.getString(csvRecord.get(5)));
-						oficina.setCentroDeAtencion(GetterUtil.getString(csvRecord.get(6)));
-						oficina.setHorarioDeAtencion(GetterUtil.getString(csvRecord.get(7)));
-						oficina.setTipoDeVia(GetterUtil.getString(csvRecord.get(8)));
-						oficina.setNombreDeVia(GetterUtil.getString(csvRecord.get(9)));
-						//log.info(csvRecord.get(10));
-						oficina.setTramiteFotografia(GetterUtil.getBoolean(csvRecord.get(11).equals("SI")));
-						oficina.setTramiteElectronico(GetterUtil.getBoolean(csvRecord.get(12).equals("SI")));
-						oficina.setTramiteDNIMayor(GetterUtil.getBoolean(csvRecord.get(13).equals("SI")));
-						oficina.setTramiteDNIMenor(GetterUtil.getBoolean(csvRecord.get(14).equals("SI")));
-						oficina.setTramiteDNIEntrega(GetterUtil.getBoolean(csvRecord.get(15).equals("SI")));
-						oficina.setTramiteINSRciviles(GetterUtil.getBoolean(csvRecord.get(16).equals("SI")));
-						oficina.setTramiteCERRciviles(GetterUtil.getBoolean(csvRecord.get(17).equals("SI")));
-						oficina.setTramiteCERRuipn(GetterUtil.getBoolean(csvRecord.get(18).equals("SI")));
-						oficina.setTramiteEREP(GetterUtil.getBoolean(csvRecord.get(19).equals("SI")));
-						//JSONFactoryUtil.createJSONObject(
-						csvData.put(JSONFactoryUtil.createJSONObject(getJson(oficina)));
+
+						if(i > 1){
+							log.info(csvRecord.getRecordNumber());
+
+							Oficina oficina = new Oficina();
+							//oficina.setUbigeoId(GetterUtil.getInteger(csvRecord.get(0)));
+							oficina.setDepartamento(GetterUtil.getString(csvRecord.get(2)));
+							oficina.setProvincia(GetterUtil.getString(csvRecord.get(3)));
+							oficina.setDistrito(GetterUtil.getString(csvRecord.get(4)));
+							oficina.setCentralTelefonico(GetterUtil.getString(csvRecord.get(5)));
+							oficina.setRepresentante(GetterUtil.getString(csvRecord.get(6)));
+							oficina.setCorreo(GetterUtil.getString(csvRecord.get(7)));
+
+							oficina.setTipoDeLocal(GetterUtil.getString(csvRecord.get(9)));
+							oficina.setCentroDeAtencion(GetterUtil.getString(csvRecord.get(11)));
+							oficina.setHorarioDeAtencion(GetterUtil.getString(csvRecord.get(12)));
+
+							//log.info();
+							oficina.setTipoDeVia(GetterUtil.getString(csvRecord.get(13)));
+							oficina.setNombreDeVia(GetterUtil.getString(csvRecord.get(14)));
+
+							oficina.setTramiteFotografia(GetterUtil.getBoolean(csvRecord.get(16).equals("SI")));
+							oficina.setTramiteElectronico(GetterUtil.getBoolean(csvRecord.get(17).equals("SI")));
+							oficina.setTramiteDNIMayor(GetterUtil.getBoolean(csvRecord.get(18).equals("SI")));
+							oficina.setTramiteDNIMenor(GetterUtil.getBoolean(csvRecord.get(19).equals("SI")));
+							oficina.setTramiteDNIEntrega(GetterUtil.getBoolean(csvRecord.get(20).equals("SI")));
+							oficina.setTramiteINSRciviles(GetterUtil.getBoolean(csvRecord.get(21).equals("SI")));
+							oficina.setTramiteCERRciviles(GetterUtil.getBoolean(csvRecord.get(22).equals("SI")));
+							oficina.setTramiteCERRuipn(GetterUtil.getBoolean(csvRecord.get(23).equals("SI")));
+							oficina.setTramiteEREP(GetterUtil.getBoolean(csvRecord.get(24).equals("SI")));
+
+							csvData.put(JSONFactoryUtil.createJSONObject(getJson(oficina)));
+						}
 					} else if (objetoImportar.equalsIgnoreCase("UBIGEO")) {
-						Ubigeo ubigeo = new Ubigeo();
-						ubigeo.setCodigo(GetterUtil.getString(csvRecord.get(0)));
-						ubigeo.setDepartamento(GetterUtil.getString(csvRecord.get(1)));
-						ubigeo.setProvincia(GetterUtil.getString(csvRecord.get(2)));
-						ubigeo.setDistrito(GetterUtil.getString(csvRecord.get(3)));
-						csvData.put(JSONFactoryUtil.createJSONObject(getJson(ubigeo)));
+						if(i > 0){
+							Ubigeo ubigeo = new Ubigeo();
+							ubigeo.setCodigo(GetterUtil.getString(csvRecord.get(0)));
+							ubigeo.setDepartamento(GetterUtil.getString(csvRecord.get(1)));
+							ubigeo.setProvincia(GetterUtil.getString(csvRecord.get(2)));
+							ubigeo.setDistrito(GetterUtil.getString(csvRecord.get(3)));
+							csvData.put(JSONFactoryUtil.createJSONObject(getJson(ubigeo)));
+						}
 					}
-				}
 				i++;
 			}
 		}

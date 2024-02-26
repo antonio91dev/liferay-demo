@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.*;
 
@@ -90,14 +91,8 @@ public class SedeAdministrationPortlet extends MVCPortlet {
 
 					}
 
-/*					StringBundler sb = new StringBundler();
-					sb.setIndex(sb.index() - 1);
-					sb.append(CharPool.NEW_LINE);
+					SessionMessages.add(actionRequest,"onlinetaskactivity.updating");
 
-					byte[] bytes = sb.toString().getBytes();
-					String contentType = ContentTypes.APPLICATION_TEXT;
-					PortletResponseUtil.sendFile((PortletRequest) actionRequest, (MimeResponse) actionResponse,"FILENAME", bytes, contentType);
-*/
 				}
 				else {
 					log.error(

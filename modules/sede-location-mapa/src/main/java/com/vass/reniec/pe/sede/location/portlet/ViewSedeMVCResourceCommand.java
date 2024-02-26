@@ -50,6 +50,7 @@ public class ViewSedeMVCResourceCommand implements MVCResourceCommand{
         String command = ParamUtil.getString(resourceRequest, "cmd");
         String codigoUbigeo = ParamUtil.getString(resourceRequest, "codigoUbigeo");
         String nombredistrito = ParamUtil.getString(resourceRequest, "nombredistrito");
+        String direccion = ParamUtil.getString(resourceRequest, "direccion");
 
         JSONObject jsonObj = JSONFactoryUtil.createJSONObject();
 
@@ -81,6 +82,14 @@ public class ViewSedeMVCResourceCommand implements MVCResourceCommand{
             optionalOrderItem = optionalOrderItem.stream().filter(c -> c.getDistrito().equals(nombredistrito)).collect(Collectors.toList());
 
 
+            jsonObj.put("searchResults",  optionalOrderItem);
+
+        }else if (command.equals("direccion")) {
+
+            _log.info("Direccion a encontrar es " +  direccion);
+            String filter = Operadores.addFilter(Filters.CENTRO_ATENCION.getFilter(), Operadores.EQUAL, direccion);
+
+            List<Oficina> optionalOrderItem = consumerService.getOficina(filter);
             jsonObj.put("searchResults",  optionalOrderItem);
 
         }

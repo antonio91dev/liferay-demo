@@ -25,69 +25,15 @@ import java.util.Map;
 )public class SedeLocationMapaDisplayConfigurationAction extends DefaultConfigurationAction {
 
     @Override
-    public void include(
-            PortletConfig portletConfig, HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse)
-            throws Exception {
+    public void include(final PortletConfig portletConfig, final HttpServletRequest httpServletRequest,
+                        final HttpServletResponse httpServletResponse) throws Exception {
 
-        if (_log.isInfoEnabled()) {
-            _log.info("Blade Message Portlet configuration include");
-        }
-
-        httpServletRequest.setAttribute(
-                SedeLocationMapaDisplayConfiguration.class.getName(),
-                _sedeLocationMapaDisplayConfiguration);
+        final String portletName = ParamUtil.getString(httpServletRequest, "portletResource");
+        httpServletRequest.setAttribute("mortgage", Boolean.TRUE);
+        httpServletRequest.setAttribute("mortgage", Boolean.TRUE);
+        httpServletRequest.setAttribute("mortgage", Boolean.TRUE);
+        httpServletRequest.setAttribute("mortgage", Boolean.TRUE);
 
         super.include(portletConfig, httpServletRequest, httpServletResponse);
     }
-
-    @Override
-    public void processAction(
-            PortletConfig portletConfig, ActionRequest actionRequest,
-            ActionResponse actionResponse)
-            throws Exception {
-
-        if (_log.isInfoEnabled()) {
-            _log.info("Blade Message Portlet configuration action");
-        }
-
-        String sedePrincipal = ParamUtil.getString(actionRequest, "sedePrincipal");
-        String tipoForm = ParamUtil.getString(actionRequest, "tipoForm");
-        String googleAPIKey = ParamUtil.getString(actionRequest, "googleAPIKey");
-        String longitud = ParamUtil.getString(actionRequest, "longitud");
-        String latitud = ParamUtil.getString(actionRequest, "latitud");
-
-        String ubicacionPrincipal = ParamUtil.getString(actionRequest, "ubicacionPrincipal");
-
-        if (_log.isInfoEnabled()) {
-            _log.info(
-                    "Message Display Configuration: tipoForm: " + tipoForm);
-
-            _log.info("Message Display Configuration:sedePrincipal: " + sedePrincipal);
-
-        }
-
-        setPreference(actionRequest, "sedePrincipal", sedePrincipal);
-        setPreference(actionRequest, "tipoForm", tipoForm);
-        setPreference(actionRequest, "googleAPIKey", googleAPIKey);
-        setPreference(actionRequest, "ubicacionPrincipal", ubicacionPrincipal);
-
-        setPreference(actionRequest, "longitud", longitud);
-        setPreference(actionRequest, "latitud", latitud);
-
-        super.processAction(portletConfig, actionRequest, actionResponse);
-    }
-
-    @Activate
-    @Modified
-    protected void activate(Map<Object, Object> properties) {
-        _sedeLocationMapaDisplayConfiguration = ConfigurableUtil.createConfigurable(
-                SedeLocationMapaDisplayConfiguration.class, properties);
-    }
-
-    private static final Log _log = LogFactoryUtil.getLog(
-            SedeLocationMapaDisplayConfigurationAction.class);
-
-    private volatile SedeLocationMapaDisplayConfiguration _sedeLocationMapaDisplayConfiguration;
-
 }

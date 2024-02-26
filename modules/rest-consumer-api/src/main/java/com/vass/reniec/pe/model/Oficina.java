@@ -19,6 +19,20 @@ public class Oficina {
 
     @JsonProperty("id")
     private Long OficinaId;
+
+    @JsonProperty("departamento")
+    private String departamento;
+
+    @JsonProperty("provincia")
+    private String provincia;
+
+    @JsonProperty("distrito")
+    private String distrito;
+
+    @JsonProperty("tipoDeLocal")
+    private String tipoDeLocal;
+
+
     @JsonProperty("centroDeAtencion")
     private String centroDeAtencion;
 
@@ -73,10 +87,37 @@ public class Oficina {
     @JsonProperty("tramiteINSRciviles")
     private Boolean tramiteINSRciviles;
 
+    public String getTipoDeLocal() {
+        return tipoDeLocal;
+    }
 
+    public void setTipoDeLocal(String tipoDeLocal) {
+        this.tipoDeLocal = tipoDeLocal;
+    }
 
+    public String getDepartamento() {
+        return departamento;
+    }
 
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
 
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
 
     public Map<String, Object> getAdditionalProperties() {
         return additionalProperties;

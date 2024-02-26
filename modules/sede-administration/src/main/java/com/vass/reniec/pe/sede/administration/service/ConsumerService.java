@@ -20,11 +20,13 @@ public interface ConsumerService {
 	public JSONObject addUbigeo(
 			JSONArray csvDataArray, ActionRequest actionRequest) throws Exception  ;
 
+	public Optional<ResponseBatch> deleteBatchUbigeo(JSONArray jsonList);
+
 	public Optional<Ubigeo> getUbigeoByfilter(String filter);
 
 	Optional<Ubicacion> getLocation(String filter);
 
-	Optional<ResponseBatch> deleteBatch(JSONArray jsonList);
+	Optional<ResponseBatch> deleteBatchOficina(JSONArray jsonList);
 
 	public List<Ubigeo> getUbigeo(String filter);
 

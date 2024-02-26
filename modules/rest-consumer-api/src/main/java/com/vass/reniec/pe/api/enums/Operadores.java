@@ -38,6 +38,16 @@ public enum Operadores {
     public static String addFilter(String field, Operadores filter, String value) {
         return String.format("?filter=%s %s '%s'", field, filter.getOperator(), value);
     }
+    public static String addThreeFiltersAndOrder(String field, Operadores filter, String value, Operadores op1,
+                                                 String field2, Operadores filter2, String value2, Operadores op2, String field3, Operadores filter3,
+                                                 String value3, String sort, String order) {
+
+        return String.format("?filter=%s %s '%s' %s %s %s '%s' %s %s %s '%s'%s%s%s%s%s%s", field, filter.getOperator(),
+                value, op1.getOperator(), field2, filter2.getOperator(), value2, op2.getOperator(), field3,
+                filter3.getOperator(), value3, Operadores.SIGN_AND.getOperator(), Filters.SORT.getFilter(),
+                Operadores.SIGN_EQUAL.getOperator(), sort, Operadores.SIGN_DOUBLEPOINTS.getOperator(), order);
+    }
+
 
     public static String addPageSizeAndSort(int pageSize, String sort, String order) {
         return String.format("?%s%s%d%s%s%s%s%s%s", Filters.PAGE_SIZE.getFilter(), Operadores.SIGN_EQUAL.getOperator(),
@@ -57,7 +67,4 @@ public enum Operadores {
         return String.format("?address='%s'%s%s%s%s", field, Operadores.SIGN_AND.getOperator(),Filters.KEY.getFilter(),Operadores.SIGN_EQUAL.getOperator(), KeyValue);
     }
 
-    //?address='Talara N° 130 RENIEC' & Key 'AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A'
-    //?address=Talara N° 130 RENIEC & 'AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A'
-    //?address='Talara N° 130 RENIEC'&key=AIzaSyAbJ6UwYW0ofJ7BdbNPwjRrZANK8E1tg0A"
 }

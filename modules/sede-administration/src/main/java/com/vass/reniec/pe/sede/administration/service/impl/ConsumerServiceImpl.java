@@ -7,8 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.PlacesApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.PlaceDetails;
+import com.google.maps.model.PlacesSearchResponse;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -47,7 +50,6 @@ public class ConsumerServiceImpl implements ConsumerService {
 		String retorno = "";
 		JSONObject resultsObject = JSONFactoryUtil.createJSONObject();
 		String filterS = Operadores.addPageSize(-1);
-
 		List<Oficina> lstOficina = getOficina(filterS);
 
 		JSONArray jsonList = JSONFactoryUtil.createJSONArray ();
@@ -57,19 +59,22 @@ public class ConsumerServiceImpl implements ConsumerService {
 			jsonList.put(result);
 		}
 
-		deleteBatch(jsonList);
+		deleteBatchOficina(jsonList);
+
+		JSONArray csvNoData = JSONFactoryUtil.createJSONArray();
+
+		String filter = Operadores.addPageSize(-1);
+		List<Ubigeo> optionalUbigeoItem = getUbigeo(filter);
+
 
 		if (Validator.isNotNull(csvDataArray)) {
 			JSONArray csvData = JSONFactoryUtil.createJSONArray();
-
 			for (int i = 1; i < csvDataArray.length(); i++) {
 				Oficina oficina = new Oficina();
 
-				oficina.setUbigeoId(GetterUtil.getInteger(csvDataArray.getJSONObject(i).get("r_ubigeo_c_ubigeoId")));
-				String codigoUbigeo = String.valueOf(oficina.getUbigeoId());
-				String filter = Operadores.addFilter(Filters.CODIGO_UBIGEO.getFilter(), Operadores.EQUAL, codigoUbigeo);
-				Optional<Ubigeo> optionalUbigeoItem = getUbigeoByfilter(filter);
-				oficina.setUbigeoId(GetterUtil.getInteger(optionalUbigeoItem.get().getId()));
+				String departamento = GetterUtil.getString(csvDataArray.getJSONObject(i).get("departamento"));
+				String provincia =GetterUtil.getString(csvDataArray.getJSONObject(i).get("provincia"));
+				String distrito=GetterUtil.getString(csvDataArray.getJSONObject(i).get("distrito"));
 
 				oficina.setCentralTelefonico(GetterUtil.getString(csvDataArray.getJSONObject(i).get("centralTelefonico")));
 				oficina.setRepresentante(GetterUtil.getString(csvDataArray.getJSONObject(i).get("representante")));
@@ -88,20 +93,43 @@ public class ConsumerServiceImpl implements ConsumerService {
 				oficina.setTramiteCERRuipn(GetterUtil.getBoolean(csvDataArray.getJSONObject(i).get("tramiteCERRuipn")));
 				oficina.setTramiteEREP(GetterUtil.getBoolean(csvDataArray.getJSONObject(i).get("tramiteEREP")));
 
-				GeocodingResult[] results = getUbicacion(oficina.getNombreDeVia() + "RENIEC");
-				if (results.length == 1) {
+				List<Ubigeo>  optionalUbigeoItem1 = optionalUbigeoItem.stream()
+						.filter(c -> c.getDepartamento().toUpperCase().equals(departamento.toUpperCase())
+								& c.getProvincia().toUpperCase().equals(provincia.toUpperCase())
+								& c.getDistrito().toUpperCase().equals(distrito.toUpperCase())).collect(Collectors.toList());
+
+				if(optionalUbigeoItem1.size() > 0) {
+					//log.info("Item id " + optionalUbigeoItem1.get(0).getId());
+					oficina.setUbigeoId(GetterUtil.getInteger(optionalUbigeoItem1.get(0).getId()));
+				}else {
+					//log.info("La Oficina no ha sido relacionado con los ubigeos. " + departamento + " provincia " + provincia.toUpperCase() + " distrito " + distrito.toUpperCase());
+				}
+
+				GeocodingResult[] results = getUbicacion( departamento  + ", " + provincia  + ", " + distrito  + ", " + oficina.getNombreDeVia());
+
+				if (results.length > 0) {
 					oficina.setLatitud(String.valueOf(results[0].geometry.location.lat));
 					oficina.setLongitud(String.valueOf(results[0].geometry.location.lng));
 					csvData.put(JSONFactoryUtil.createJSONObject(getJson(oficina)));
-				}else{
-					log.warn("La Oficina no ha sido encontrada por la api de google " + oficina.getCentroDeAtencion());
 
+
+				}else{
+					csvNoData.put(JSONFactoryUtil.createJSONObject(getJson(oficina)));
+
+					//log.info("Reniec " +  oficina.getDistrito() + " " + oficina.getNombreDeVia());
+					//log.info("La Oficina no ha sido encontrada por la api de google " + oficina.getCentroDeAtencion());
 				}
 
 			}
 			retorno = postOficina(csvData);
 		}
+
+
+		log.info(csvNoData);
+
 		resultsObject = JSONFactoryUtil.createJSONObject(retorno);
+		resultsObject.put("errorFile",csvNoData);
+		log.info(resultsObject);
 		return resultsObject;
 	}
 
@@ -110,14 +138,36 @@ public class ConsumerServiceImpl implements ConsumerService {
 			JSONArray csvDataArray, ActionRequest actionRequest) throws Exception  {
 
 		String retorno = "";
+
+		String filter = Operadores.addPageSize(-1);
+		List<Ubigeo> lstUbigeo = getUbigeo(filter);
+
+		List<Oficina> lstOficina = getOficina(filter);
+
+		JSONArray jsonList = JSONFactoryUtil.createJSONArray();
+
+		for (Oficina oficina:lstOficina) {
+			JSONObject result = JSONFactoryUtil.createJSONObject();
+			result.put("id",oficina.getOficinaId());
+			jsonList.put(result);
+		}
+
+		deleteBatchOficina(jsonList);
+
+		jsonList = JSONFactoryUtil.createJSONArray();
+		for (Ubigeo ubigeo:lstUbigeo) {
+			JSONObject result = JSONFactoryUtil.createJSONObject();
+			result.put("id",ubigeo.getId());
+			jsonList.put(result);
+		}
+
+		deleteBatchUbigeo(jsonList);
+
 		JSONObject resultsObject = JSONFactoryUtil.createJSONObject();
 
 		if (Validator.isNotNull(csvDataArray)) {
 			log.info("Data Array Length ===> " + csvDataArray.length());
-
-		  	JSONArray csvData = JSONFactoryUtil.createJSONArray();
-
-			retorno = postUbigeo(csvData);
+			retorno = postUbigeo(csvDataArray);
 		}
 
 
@@ -145,10 +195,26 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 
 	@Override
-	public Optional<ResponseBatch> deleteBatch(JSONArray jsonList) {
+	public Optional<ResponseBatch> deleteBatchOficina(JSONArray jsonList) {
 
 		log.info(jsonList.toString());
 		String response = restConsumer.delete(SedeAdministrationPortletKeys.OFICINA_HOST_BATCH,credentials,jsonList.toString());
+
+		ResponseBatch batchSearchResponse = new ResponseBatch();
+		try {
+			batchSearchResponse = objectMapper.readValue(response, ResponseBatch.class);
+		} catch (JsonProcessingException e) {
+			log.error(e);
+		}
+
+		return Optional.ofNullable(batchSearchResponse);
+	}
+
+	@Override
+	public Optional<ResponseBatch> deleteBatchUbigeo(JSONArray jsonList) {
+
+		log.info(jsonList.toString());
+		String response = restConsumer.delete(SedeAdministrationPortletKeys.UBIGEO_HOST_BATCH,credentials,jsonList.toString());
 
 		ResponseBatch batchSearchResponse = new ResponseBatch();
 		try {
@@ -260,7 +326,13 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 			results = GeocodingApi.geocode(context,direccion).await();
 
-			System.out.println(results.length);
+			/*PlacesSearchResponse results1 = PlacesApi.textSearchQuery(context, direccion).await();
+			if (results1.results.length > 0){
+				System.out.println(results1.results[0].formattedAddress);
+			}else {
+				System.out.println("[DIRECCION] " + direccion);
+			}*/
+
 			context.shutdown();
 
 		} catch (ApiException | IOException | InterruptedException ex) {

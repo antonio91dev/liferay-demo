@@ -35,8 +35,8 @@
         cssClass="add-group-container"
 >
     <liferay-frontend:edit-form action="${configurationActionURL}" method="post" name="fm" fluid="true">
-        <aui:input name="longitud" type="hidden" value="${longitud}"/>
-        <aui:input name="latitud" type="hidden" value="${latitud}"/>
+        <aui:input name="longitud" type="hidden" value="<%= longitud %>"/>
+        <aui:input name="latitud" type="hidden" value="<%= latitud %>"/>
         <aui:input
                 name="<%= Constants.CMD %>"
                 type="hidden"
@@ -45,7 +45,7 @@
         <aui:input
                 name="redirect"
                 type="hidden"
-                value="${configurationRenderURL}"
+                value="<%= configurationRenderURL %>"
         />
         <liferay-frontend:edit-form-body>
             <liferay-frontend:fieldset collapsed="<%= false %>" collapsible="true" label="Buscador">
@@ -54,7 +54,7 @@
                         <aui:select
                                 label="Tipo de Formulario"
                                 name="tipoForm"
-                                value="${tipoForm}"
+                                value="<%= tipoForm %>"
                         >
                             <aui:option value="mapacontacto">Mapa Contacto</aui:option>
                             <aui:option value="mapaoficina">Mapa Oficinas</aui:option>
@@ -62,8 +62,7 @@
 
                     </aui:col>
                     <aui:col width="50">
-                        <aui:input class="form-control" label="Ubicacion Principal" name="ubicacionPrincipal"
-                                   required="true" type="text" value="${ubicacionPrincipal}">
+                        <aui:input class="form-control" label="Ubicacion Principal" name="ubicacionPrincipal" required="true" type="text" value="<%= ubicacionPrincipal %>">
                             <aui:validator name="maxLength">256</aui:validator>
                         </aui:input>
                     </aui:col>
@@ -73,17 +72,18 @@
                         <aui:input helpMessage='<%= LanguageUtil.get(request, "set-the-google-places-api-key-that-is-used-for-this-set-of-pages") %>'
                                    label='<%= LanguageUtil.get(request, "google-places-api-key") %>'
                                    name='googleAPIKey'
-                                   value="${renderRequest.preferences.getValue('googleAPIKey')}" />
+                                   value="<%= googleAPIKey %>" />
                     </aui:col>
                     <aui:col width="50">
                     </aui:col>
                 </aui:row>
                 <aui:row>
                     <aui:col width="50">
-                        <aui:input type="text" name="preferences--heroAgente-xs--" cssClass="span6"
-                                   label="Texto de Boton busqueda" />
+
                     </aui:col>
                     <aui:col width="50">
+                        <aui:input type="text" name="preferences--heroAgente-xs--" cssClass="span6"
+                                   label="Texto de Boton busqueda" />
                     </aui:col>
                 </aui:row>
                 <aui:row>
@@ -98,12 +98,12 @@
                 </aui:row>
                 <aui:row>
                     <aui:col width="50">
-                        <aui:input type="text" name="preferences--heroAgente-sm--" cssClass="span6"
-                                   label="URL imagen Icon Busqueda" />
+                            <aui:input type="text" name="preferences--heroAgente-sm--" cssClass="span6"
+                                       label="URL imagen Icon Busqueda" />
                     </aui:col>
                     <aui:col width="50">
-                        <aui:input type="text" name="preferences--heroAgente-xs--" cssClass="span6"
-                                   label="URL imagen Icon Direccion" />
+                            <aui:input type="text" name="preferences--heroAgente-xs--" cssClass="span6"
+                               label="URL imagen Icon Direccion" />
                     </aui:col>
                 </aui:row>
             </liferay-frontend:fieldset>

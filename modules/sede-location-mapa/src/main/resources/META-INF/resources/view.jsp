@@ -11,15 +11,12 @@
 
 <section class="container bg-color-blanco">
     <div class="r-c-<%= tipoForm %>">
-        <div class="r-c-mapaoficina-header">
-            <h2 class="r-c-mapaoficina__h-principal color-titulo-primario-azul">Oficinas y horario</h2>
-            <h3 class="r-c-mapaoficina__h-secundario color-titulo-gris-3">Encuentre aqu&iacute; la ubicaci&oacute;n de nuestras oficinas y el horario de atenci&oacute;n</h3>
-        </div>
         <%
             // Set balance and formatted balance as session attributes.
             if(tipoForm.equals("mapaoficina"))
             {
         %>
+
         <div class="r-c-<%= tipoForm %>-search">
             <div class="r-c-mapaoficina-search__input">
                 <input
@@ -148,6 +145,7 @@
 
             </div>
         </div>
+
         <%   }
         %>
 
@@ -162,13 +160,169 @@
     </div>
 </section>
 
+
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= googleAPIKey %>&callback=initMap"></script>
 
 <script type="text/javascript">
 
-    $( document ).ready(function() {
+    $(document).ready(function() {
 
+        //var locations = [];
+        //$("#map").show();
+        //<portlet:namespace />getCargaDepartamento();
+        //<portlet:namespace />getListaAutocomplete();
+        //<portlet:namespace />initControls();
+        //<portlet:namespace />getCargarxDistrito("");
+        //let locations = [];
+        //initMap(-12.0431800, -77.0282400, locations);
+
+        filterMapByDistrito(140101);
+
+    });
+
+    let districts = [];
+    //let locations=[];
+
+    function initMap(latitude, longitude, locations) {
+        console.log(latitude);
+        console.log(longitude);
+        console.log("locations");
+        console.log(locations);
+        console.log(locations.length);
+
+
+
+        if(locations.length !== 0){
+            $('#resultadoInformacion').empty();
+            $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+                " <div class='card-item__header'>" +
+                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
+                "</div>" +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].nombreDeVia +
+                "</p>" +
+                "</div>"+
+                "<div class='card-item bg-color-blanco'>" +
+                " <div class='card-item__header'>" +
+                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Contacto</h4>" +
+                "</div>" +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].representante + "</br>" + locations[0].correo +
+                "</p>" +
+                "</div>"+
+                "<div class='card-item bg-color-blanco'>" +
+                " <div class='card-item__header'>" +
+                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                "</div>" +
+                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].horarioDeAtencion +
+                "</p>" +
+                "</div>"+
+                "");
+        }
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: {lat: Number(latitude), lng: Number(longitude)}
+        });
+
+        if(map == 'undefined') {
+            alert('map is undefined');
+        }
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        var infowindow = new google.maps.InfoWindow();
+        var marker, i;
+        var markers = locations.map(function(location, i) {
+            marker = new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length],
+                title: location.storeName
+            });
+
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    infowindow.setContent('<div><strong>'+location.centroDeAtencion+'</div></strong><div>'+location.nombreDeVia+','+'</div>' );
+                    $('#resultadoInformacion').empty();
+                    $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
+                        " <div class='card-item__header'>" +
+                        "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                        "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
+                        "</div>" +
+                        "<p class='card-item__parrafo color-parrafo-gris-3'>" + location.nombreDeVia +
+                        "</p>" +
+                        "</div>"+
+                        "<div class='card-item bg-color-blanco'>" +
+                        " <div class='card-item__header'>" +
+                        "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                        "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                        "</div>" +
+                        "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].representante + "</br>" + locations[0].correo +
+                        "</p>" +
+                        "</div>"+
+                        "<div class='card-item bg-color-blanco'>" +
+                        " <div class='card-item__header'>" +
+                        "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
+                        "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
+                        "</div>" +
+                        "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].horarioDeAtencion +
+                        "</p>" +
+                        "</div>"+
+                        "");
+
+
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+
+            return marker;
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    }
+
+
+    function <portlet:namespace />getCargarxDistrito(direccion){
+        //direccion
+        $.ajax({
+            url :"<%= getSedesURL %>",
+            data:{
+                <portlet:namespace />cmd: "direccion",
+                <portlet:namespace />direccion: direccion
+            },
+            success: function(data) {
+                console.log(data);
+                console.log(data.searchResults);
+
+                if(data.searchResults.length>0) {
+                    var locations = [];
+
+                    $.each( data.searchResults, function( key, value ) {
+                        locations.push({
+                            lat:Number(value.latitud),
+                            lng:Number(value.longitud),
+                            centroDeAtencion:value.centroDeAtencion,
+                            nombreDeVia: value.nombreDeVia,
+                            tipoDeVia: value.tipoDeVia,
+                            horarioDeAtencion: value.horarioDeAtencion,
+                            representante: value.representante,
+                            correo: value.correo,
+                            centralTelefonico: value.centralTelefonico
+                        });
+                    });
+
+                    initMap(locations[0].lat,locations[0].lng,locations);
+                }
+            }
+        });
+
+    }
+
+    function <portlet:namespace />initControls(){
         $(".r-j-input-distrito").on("input", function() {
             let inputValue = $(this).val().toLowerCase();
             let autocompleteList = $(".autocomplete-list");
@@ -187,19 +341,8 @@
             }
         });
 
-        $("#map").show();
 
-
-
-
-
-        var locations = [];
-        initMap(<%= latitud %>,<%= longitud %>,locations);
-        <portlet:namespace />getCargaDepartamento();
-        <portlet:namespace />getListaAutocomplete();
-    });
-
-    let districts = [];
+    }
 
     function <portlet:namespace />getListaAutocomplete(){
         $.ajax({
@@ -326,35 +469,13 @@
         });
     }
 
-    function initMap(latitude, longitude,locations) {
+    function initMap_(latitude, longitude,locations) {
 
-
-
-
-        if(locations.length > 0){
-            $('#resultadoInformacion').empty();
-            $('#resultadoInformacion').append("<div class='card-item bg-color-blanco'>" +
-                " <div class='card-item__header'>" +
-                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
-                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Direccion</h4>" +
-                "</div>" +
-                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].nombreDeVia +
-                "</p>" +
-                "</div>"+
-                "<div class='card-item bg-color-blanco'>" +
-                " <div class='card-item__header'>" +
-                "<img src='<%= request.getContextPath() %>/img/computador.svg' alt='' loading='lazy'>" +
-                "<h4 class='card-item__h-principal color-titulo-primario-azul'>Horario</h4>" +
-                "</div>" +
-                "<p class='card-item__parrafo color-parrafo-gris-3'>" + locations[0].centroDeAtencion +
-                "</p>" +
-                "</div>"+
-                "");
-        }
+        //var locations = [];
 
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 5,
-            center: {lat: Number(latitude), lng: Number(longitude)}
+            center: {lat: Number(-11.9658188279733), lng: Number(-77.0037611758746)}
         });
 
 
@@ -405,6 +526,8 @@
         });
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+
     }
 
     function getSede() {
@@ -450,6 +573,7 @@
                 <portlet:namespace />codigotramite: codigotramite
             },
             success: function(data) {
+                console.log(data);
                 console.log(data.searchResults);
 
                 if(data.searchResults.length>0) {
@@ -462,7 +586,10 @@
                             centroDeAtencion:value.centroDeAtencion,
                             nombreDeVia: value.nombreDeVia,
                             tipoDeVia: value.tipoDeVia,
-                            horarioDeAtencion: value.horarioDeAtencion
+                            horarioDeAtencion: value.horarioDeAtencion,
+                            representante: value.representante,
+                            correo: value.correo,
+                            centralTelefonico: value.centralTelefonico
                         });
                     });
 

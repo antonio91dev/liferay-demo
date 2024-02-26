@@ -44,3 +44,4 @@ portletDisplay.setURLBack(redirect);
     <liferay-frontend:edit-form-buttons redirect="<%= redirect %>" />
   </liferay-frontend:edit-form-footer>
 </liferay-frontend:edit-form>
+<liferay-ui:success key="onlinetaskactivity.updating" message="onlinetaskactivity.updating" />
